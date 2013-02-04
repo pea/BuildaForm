@@ -7,6 +7,6 @@ Features
 ========
 - Outputs form as JSON for processing or straight HTML
 - Ability to load forms saved as JSON
-- HTML fully customizable templates with Handlebars
+- HTML fully customizable with Handlebars
 - Supports re-ordering of inputs with the jQuery UI Sortable plugin
 - Supports text, checkbox, radio and select inputs
