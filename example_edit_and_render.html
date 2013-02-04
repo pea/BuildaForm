@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="js/jquery.js"></script>
+<script src="js/jquery.easing.js"></script>
+<script src="js/handlebars.js"></script>
+<script src="js/jquery-ui.min.js"></script>
+<script src="js/buildaform.jquery.js"></script>
+<style>
+
+body {
+    font-family: verdana;
+    font-size: 11px
+}
+
+#buildaform .input_row {
+    border-bottom: 1px solid #CCCCCC;
+    margin-bottom: 20px;
+    padding-bottom: 10px
+}
+
+#buildaform_preview {
+    position: absolute;
+    width: 400px;
+    min-height: 400px;
+    top: 0;                                                      
+    right: 0;
+    background-color: #FFFFFF;
+    box-shadow: 0 0 10px RGBA(0,0,0,0.3);
+    padding: 10px
+}
+
+#buildaform_preview .input_item {
+    border-bottom: 1px solid #CCCCCC;
+    margin-bottom: 20px;
+	padding-bottom: 10px;
+}
+
+</style>
+</head>
+<body>
+
+<script>
+
+$(document).ready(function(){
+    
+    var myjson = '[{"type":"text","label":"A Text","name":"text_1"},{"type":"checkbox","label":"A Checkbox","options":[{"label":"one","name":"checkbox_1"},{"label":"two","name":"checkbox_2"},{"label":"three","name":"checkbox_3"}]},{"type":"radio","label":"A Radio","options":[{"label":"one","value":"value_one"},{"label":"two","value":"value_two"},{"label":"three","value":"value_three"}],"name":"radio_1"},{"type":"select","label":"A Select","options":[{"label":"one","value":"value_one"},{"label":"two","value":"value_two"},{"label":"three","value":"value_three"}],"name":"select_1"}]'
+    
+    $(this).buildaform.json_to_html({json: myjson});
+    
+    // Initiate form builder
+    $('#buildaform').buildaform({
+        insert_json: myjson,
+        onSave: function(output){
+            $(this).buildaform.json_to_html({json: output});
+        }
+    });
+    
+});
+
+</script>
+
+<div id="buildaform_preview"></div>
+
+<h1>Form Builder</h1>
+
+<!--
+    #buildaform will contain all the elements of the form builder.
+    
+    .select_type_container will contain the dropdown allowing the user 
+    to select the input type (#select_type_template template).
+    
+    #save when clicked outputs the form as JSON
+    
+    #input_container will contain each of the new inputs, displayed as rows.
+    Each row uses one of many templates for text, checkboxes, radios or select
+    inputs.
+-->
+
+<div id="buildaform">
+    <div id="select_type_container"></div>
+    <input type="button" id="save" value="Save">
+    <div id="input_container"></div>  
+</div>
+
+<!-- Start: Templates -->
+<!--
+    Can be stored anywhere but ideally loaded with RequireJS
+    Function: Templates for the elements of the form builder - Input selection dropdown, 
+    various input setting rows and children of those.
+-->
+
+<!-- Select Type: Dropdown to select input type -->
+
+<script type="text/template" id="select_type_template">
+    <select id="select_type">
+        <option value="text">Text</option>
+        <option value="checkbox">Checkbox</option>
+        <option value="radio">Radio</option>
+        <option value="select">Select</option>
+    </select>
+    <input type="button" value="Add" id="add_input">
+</script>
+
+<!-- Text Input: Row to add new text input --> 
+
+<script type="text/template" id="text_input_template">
+    <div class="input_row" data-type="text">
+        <h3>Text</h3>
+        Label: <input type="text" class="input_label" value="{{input_label}}"><br />
+        Input Name: <input type="text" class="input_name" value="{{input_name}}"> 
+        <ul>
+            <li class="remove_input">Remove</li>
+        </ul>
+    </div>
+</script>
+
+<!-- Checkbox Input: Row to add new checkbox --> 
+
+<script type="text/template" id="checkbox_input_template">
+    <div class="input_row" data-type="checkbox">
+        <h3>Checkbox</h3>
+        Label: <input type="text" class="input_label" value="{{input_label}}">
+        <div class="add_option">Add</div>
+        <ul class="checkbox_input_option_container"></ul>
+        <ul>
+            <li class="remove_input">Remove</li>
+        </ul>
+    </div>
+</script>
+
+<!-- Checkbox Input Option Row: Option sub-row of checkbox -->
+
+<script type="text/template" id="checkbox_input_option_template">
+    <div class="checkbox_option_row">
+        <li>
+            Label: <input type="text" data-type="checkbox_option" value="{{input_label}}"><br />
+            Input Name: <input type="text" class="input_name" value="{{input_name}}"><br />
+            <span class="remove_checkbox_option">Remove</span>
+        </li>
+    </div>
+</script>
+
+<!-- Radio Input: Row to add new radio input --> 
+
+<script type="text/template" id="radio_input_template">
+    <div class="input_row" data-type="radio">
+        <h3>Radio</h3>
+        Label: <input type="text" class="input_label" value="{{input_label}}"><br />
+        Input Name: <input type="text" class="input_name" value="{{input_name}}"><br />
+        <div class="add_option">Add</div>
+        <ul class="radio_input_option_container"></ul>
+        <ul>
+            <li class="remove_input">Remove</li>
+        </ul>
+    </div>
+</script>
+
+<!-- Radio Input Option Row: Option sub-row of radio input -->
+
+<script type="text/template" id="radio_input_option_template">
+    <div class="radio_option_row">
+        <li>
+            Label: <input type="text" data-type="radio_option" value="{{input_label}}"><br />
+            Value: <input type="text" data-type="radio_value" value="{{input_value}}"><br />
+            <span class="remove_radio_option">Remove</span>
+        </li>
+    </div>
+</script>
+
+<!-- Select Input: Row to add new select input --> 
+
+<script type="text/template" id="select_input_template">
+    <div class="input_row" data-type="select">
+        <h3>Select</h3>
+        Label: <input type="text" class="input_label" value="{{input_label}}">
+        Input Name: <input type="text" class="input_name" value="{{input_name}}"><br />
+        <div class="add_option">Add</div>
+        <ul class="select_input_option_container"></ul>
+        <ul>
+            <li class="remove_input">Remove</li>
+        </ul>
+    </div>
+</script>
+
+<!-- Select Input Option Row: Option sub-row of select input -->
+
+<script type="text/template" id="select_input_option_template">
+    <div class="select_option_row">
+        <li>
+            Label: <input type="text" data-type="select_option" value="{{input_label}}"><br />
+            Value: <input type="text" data-type="select_value" value="{{input_value}}"><br />
+            <span class="remove_select_option">Remove</span>
+        </li>
+    </div>
+</script>
+
+<!-- Sample Input: Text -->
+
+<script type="text/template" id="input_text_template">
+    <div class="input_item">
+        {{label}}: <input type="text" name="{{name}}">
+    </div>
+</script>
+
+<!-- Sample Input: Checkbox -->
+
+<script type="text/template" id="input_checkbox_template">
+    <div class="input_item">
+        <h2>{{label}}</h2>
+        {{#each options}}
+            <div><label><input type="checkbox" name="{{name}}">{{label}}</label></div>
+        {{/each}}
+    </div>
+</script>
+
+<!-- Sample Input: Radio -->
+
+<script type="text/template" id="input_radio_template">
+    <div class="input_item">
+        <h2>{{label}}</h2>
+        {{#each options}}
+            <div><label><input type="radio" name="{{name}}" value="{{value}}">{{label}}</label></div>
+        {{/each}}
+    </div>
+</script>
+
+<!-- Sample Input: Select -->
+
+<script type="text/template" id="input_select_template">
+    <div class="input_item">
+        <h2>{{label}}</h2>
+        <select name="{{name}}">
+        {{#each options}}
+            <option value="{{value}}">{{label}}</option>
+        {{/each}}
+        </select>
+    </div>
+</script>
+
+<!-- End: Templates -->
+
+</body>
+</html>
