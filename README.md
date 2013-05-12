@@ -6,6 +6,8 @@ jQuery form builder. Allows you to quickly implement a form builder that require
 Demo
 ====
 
+Note: For the sake of simplicity and ease of customization the demo has minimal styling.
+
 http://yellowbacon.com/demos/BuildaForm/example_edit_and_render.html
 
 Features
