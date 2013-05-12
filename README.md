@@ -8,7 +8,7 @@ Demo
 
 Note: For the sake of simplicity and ease of customization the demo has minimal styling.
 
-http://yellowbacon.com/demos/BuildaForm/example_edit_and_render.html
+http://demo.peterbailey.eu/BuildaForm/example_edit_and_render.html
 
 Features
 ========
