@@ -3,13 +3,6 @@ BuildaForm
 
 jQuery form builder. Allows you to quickly implement a form builder that requires no technical knowledge to build complex forms.
 
-Demo
-====
-
-Note: For the sake of simplicity and ease of customization the demo has minimal styling.
-
-http://demo.peterbailey.eu/BuildaForm/example_edit_and_render.html
-
 Features
 ========
 - Outputs form as JSON for processing or straight HTML
